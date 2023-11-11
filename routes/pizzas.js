@@ -119,4 +119,38 @@ router.get("/", function (req, res, next) {
   res.json(data);
 });
 
+router.get("/:pizzaId", function (req, res, next) {
+  let pizza = data.find((item) => item._id === req.params.pizzaId);
+  res.json(pizza);
+});
+
+router.put("/:pizzaId", function (req, res, next) {
+  let pizzaFromRequest = req.body;
+
+  let indexOfExistingPizza = data.findIndex(
+    (item) => item._id === req.params.pizzaId
+  );
+  data[indexOfExistingPizza] = pizzaFromRequest;
+
+  res.sendStatus(200);
+});
+
+router.delete("/:pizzaId", function (req, res, next) {
+  let indexOfExistingPizza = data.findIndex(
+    (item) => item._id === req.params.pizzaId
+  );
+  data.splice(indexOfExistingPizza, 1);
+
+  res.sendStatus(200);
+});
+
+router.post("/", function (req, res, next) {
+  let pizzaFromRequest = req.body;
+  pizzaFromRequest._id = Math.random().toString(36).substr(2, 9); // Generate a new id
+
+  data.push(pizzaFromRequest);
+
+  res.sendStatus(200);
+});
+
 module.exports = router;
